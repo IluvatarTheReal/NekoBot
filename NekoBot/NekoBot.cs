@@ -17,10 +17,9 @@ namespace NekoBot
         private static readonly Logger logger = LogManager.GetLogger("NekoBot");
 
         private DiscordSocketClient client;
-        private CommandHandler commandHandler;
-        private string botToken;
+        private CommandHandler commandHandler;        
 
-        public NekoBot(string _botToken)
+        public NekoBot()
         {            
             client = new DiscordSocketClient();
             client.Log += Client_Log;
@@ -28,15 +27,16 @@ namespace NekoBot
             var commandService = new CommandService();
             commandHandler = new CommandHandler(client, commandService);
 
+            AppDomain.CurrentDomain.ProcessExit += OnNekoBotClosingEvent;
 
-            botToken = _botToken;
+            NekoConfig.LoadConfig();            
         }
 
         public async Task RunAsync()
         {
             await commandHandler.InstallCommandsAsync();
 
-            await client.LoginAsync(TokenType.Bot, botToken);
+            await client.LoginAsync(TokenType.Bot, NekoConfig.BotToken);
             await client.StartAsync();
         }
 
@@ -47,5 +47,9 @@ namespace NekoBot
             return Task.CompletedTask;
         }
 
+        private async void OnNekoBotClosingEvent(object sender, EventArgs e)
+        {
+            await client.LogoutAsync();
+        }
     }
 }

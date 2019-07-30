@@ -9,7 +9,7 @@ using NekoBot.Infrastructure.Data;
 namespace NekoBot.Infrastructure.Migrations
 {
     [DbContext(typeof(NekoDbContext))]
-    [Migration("20190723021519_initial-commit")]
+    [Migration("20190723222026_initial-commit")]
     partial class initialcommit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

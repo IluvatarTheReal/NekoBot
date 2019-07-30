@@ -18,7 +18,7 @@ namespace NekoBot.Core.Services
         }
 
         public async Task KickUser(IGuildUser user, string reason)
-        {
+        {            
             //await user.KickAsync(reason);
             await AddModerationLog(ModerationLog.ModAction.Kick, user, reason);
         }

@@ -11,12 +11,15 @@ namespace NekoBot.Core.Services.MessageBuilder
     {
         public MessageBuilderService(DiscordSocketClient _client)
             : base(_client)
-        {            
-        }        
-
-        public static string GetNewLine(string txt)
         {
-            return $"{txt}\r\n";
+        }
+
+        public static string GetNewLine(string txt, bool lastLine = false)
+        {
+            if (lastLine)
+                return $"{txt}";
+            else
+                return $"{txt}\r\n";
         }
 
         public static string GetBoldLine(string txt)

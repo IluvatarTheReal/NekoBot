@@ -1,0 +1,85 @@
+#!/bin/sh
+
+NekoExtract()
+{
+  if [ -z "$1" ]
+  then
+    echo "Extracting files..."
+    unzip -o publish.zip -d /home/pi/bin/NekoBot
+  else
+    echo "Extracting files for version: $1"
+    unzip -o $1.zip -d /home/pi/bin/NekoBot
+  fi
+
+  echo Giving executing permissions...
+  chmod +x /home/pi/bin/NekoBot/NekoBot
+
+  echo New files deployed, NekoBot ready to run.
+}
+
+
+NekoStart()
+{
+  echo Starting NekoBot
+  nohup ./NekoBot/NekoBot &
+}
+
+NekoStop()
+{
+  echo Stopping NekoBot
+  sudo ps -ef | grep NekoBot | grep -v grep | awk '{print $2}' | xargs sudo kill
+  echo All NekoBot instance stopped.
+}
+
+NekoReboot()
+{
+  echo Rebooting NekoBot
+  NekoStop
+  NekoStart
+}
+
+NekoDeploy()
+{
+  if [ -z "$1" ]
+  then
+	  echo "Deploying NekoBot"  
+  else
+	  echo "Deploying NekoBot version $1"  
+  fi
+  NekoStop
+
+  if [ -z "$1" ]
+  then
+	  NekoExtract $1
+  else
+	  NekoExtract $1
+  fi
+
+  NekoStart
+}
+
+
+if [ "$1" = "-h" -o "$1" = "help" ]; then
+	echo "Usage:
+  Neko deploy <version>
+  Neko reboot
+  Neko kill
+  Neko start
+  Neko -h | --help
+
+Options:
+  -h --help     Show this screen."
+
+elif [ "$1" = "deploy" -a "$2" ]; then
+	NekoExtract $2
+elif [ "$1" = "extract"]; then
+	NekoDeploy $1
+elif [ "$1" = "reboot" ]; then
+	NekoReboot
+elif [ "$1" = "stop" ]; then
+	NekoStop
+elif [ "$1" = "start" ]; then
+	NekoStart
+else
+	echo Verify arguments values
+fi

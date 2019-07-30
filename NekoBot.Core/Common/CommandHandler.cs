@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NekoBot.Core.Common.Interfaces;
 using NekoBot.Core.Extensions;
 using NekoBot.Core.Services;
+using NekoBot.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -53,7 +54,7 @@ namespace NekoBot.Core
             int argPos = 0;
 
             // Determine if the message is a command based on the prefix and make sure no bots trigger commands
-            if (!(message.HasCharPrefix('!', ref argPos) ||
+            if (!(message.HasCharPrefix(NekoConfig.CommandPrefix, ref argPos) ||
                 message.HasMentionPrefix(client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
                 return;

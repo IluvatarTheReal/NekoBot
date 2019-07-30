@@ -10,8 +10,8 @@ namespace NekoBot
         => new Program().MainAsync().GetAwaiter().GetResult();
 
         public async Task MainAsync()
-        {
-            NekoBot bot = new NekoBot("MjI1ODA0NzQ5MjMwODMzNjY0.XTJgGQ.AdFWBL6Jm9Ii8h-wkzdVIZYyiaE");
+        {            
+            NekoBot bot = new NekoBot();
 
             await bot.RunAsync();
 
