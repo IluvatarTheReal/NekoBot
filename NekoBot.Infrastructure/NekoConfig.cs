@@ -15,11 +15,11 @@ namespace NekoBot.Infrastructure
         public static void LoadConfig()
         {
 #if DEBUG
-            BotToken = "MjIzOTQ4NjEwMjgxMTQ0MzIw.XTzoMQ.Lchf4wK0BIfWRtS60mfSr5F7_VI";
+            BotToken = "";
             CommandPrefix = '!';
             Debug = true;
 #elif RELEASE
-            BotToken = "MjI1ODA0NzQ5MjMwODMzNjY0.XTeFVQ.iPkWtSb1nWDccEegA1EojaWyZ-Y";
+            BotToken = "";
             CommandPrefix = '&';
             Debug = false;
 #endif

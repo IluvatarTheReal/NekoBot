@@ -25,13 +25,13 @@ namespace NekoBot.Core.Services
 
         public async Task BanUser(IGuildUser user, string reason)
         {
-            await context.Guild.AddBanAsync(user, reason: reason);
+            //await context.Guild.AddBanAsync(user, reason: reason);
             await AddModerationLog(ModerationLog.ModAction.Ban, user, reason);
         }
 
         public async Task UnBanUser(IGuildUser user, string reason)
         {
-            await context.Guild.RemoveBanAsync(user);
+            //await context.Guild.RemoveBanAsync(user);
             await AddModerationLog(ModerationLog.ModAction.Unban, user, reason);
         }
 

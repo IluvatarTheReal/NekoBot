@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NekoBot.Modules.Admin
 {
-    [NekoModule("admin")]
+    [NekoModule("!admin")]
     public class AdminModule : ModuleBase<SocketCommandContext>
     {
         private EmbedBuilderService embedBuilderService;
@@ -21,21 +21,23 @@ namespace NekoBot.Modules.Admin
             embedBuilderService = _embedBuilderService;
         }
 
-        [NekoCommand("kill")][RequireOwner]
+        [NekoCommand("kill")]
+        [RequireOwner]
         public async Task KillAsync()
         {
             await ReplyAsync("Shutting down in");
             await CountDownAsync(3);
             await ReplyAsync("Shutting down");
-            
+            await Context.Client.LogoutAsync();
             if (NekoConfig.Debug)
                 Environment.Exit(0);
             else
-                "sh NekoBotStop.sh".Bash();
+                "Neko stop".Bash();
         }
 
-        [NekoCommand("deploy")][RequireOwner]
-        public async Task DeployAsync()
+        [NekoCommand("deploy")]
+        [RequireOwner]
+        public async Task DeployAsync(string version)
         {
             if (NekoConfig.Debug)
             {
@@ -43,27 +45,35 @@ namespace NekoBot.Modules.Admin
             }
             else
             {
-                await ReplyAsync("Getting ready to deploy NekoBot newest version, the bot will shut down during the process.");
+                await ReplyAsync($"Getting ready to deploy NekoBot version {version}.");
                 await ReplyAsync("Starting deploy in");
                 await CountDownAsync(3);
                 await ReplyAsync("See you soon, mreeeow!");
-                
-                "sh NekoDeploy.sh".Bash();
+
+                $"Neko deploy {version}".Bash();
             }
         }
 
-        [NekoCommand("bash")][RequireOwner]
+        [NekoCommand("bash")]
+        [RequireOwner]
         public async Task BashAsync([Remainder]string bashLine)
         {
             await ReplyAsync(bashLine.Bash());
         }
 
-        [NekoCommand("script")][RequireOwner]
+        [NekoCommand("script")]
+        [RequireOwner]
         public async Task ScriptAsync(string scriptName)
         {
             await ReplyAsync($"sh {scriptName}.sh".Bash());
         }
 
+        [NekoCommand("username")]
+        [RequireOwner]
+        public async Task SetUsernameAsync([Remainder]string username)
+        {
+            await Context.Client.CurrentUser.ModifyAsync(p => p.Username = username);            
+        }
 
         private async Task CountDownAsync(int startAt)
         {
